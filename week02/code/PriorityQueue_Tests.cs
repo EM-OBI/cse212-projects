@@ -141,12 +141,9 @@ public class PriorityQueueTests
     {
         var priorityQueue = new PriorityQueue();
 
-        var queueLength = priorityQueue.Length;
-
         Exception expectedResult = new InvalidOperationException("The queue is empty!");
 
         //Catch thrown error if the queue is empty and compare with expectedResult
-        Exception exception = null; 
         try
         {
             priorityQueue.Dequeue();
