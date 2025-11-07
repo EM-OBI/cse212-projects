@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics; 
 
 // TODO Problem 1 - Run test cases and record any defects the test code finds in the comment above the test method.
 // DO NOT MODIFY THE CODE IN THE TESTS in this file, just the comments above the tests. 
@@ -11,7 +12,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3) and
     // run until the queue is empty
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: The expected person at a particular index doesn't match. First point of failure occured when the expected result was Bob and we got Sue instead. Which likely means the order of addition is reversed. The error arose because subsequent players were added to the front of the queue instead of the back as is expected in a queue.
     public void TestTakingTurnsQueue_FiniteRepetition()
     {
         var bob = new Person("Bob", 2);
@@ -43,7 +44,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3)
     // After running 5 times, add George with 3 turns.  Run until the queue is empty.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, George, Sue, Tim, George, Tim, George
-    // Defect(s) Found: 
+    // Defect(s) Found: The same error from TestTakingTurnsQueue_FiniteRepetition() was being repeated here. When the order of addition was fixed, the error went away. The error that arose was from a wrong order of addition. 
     public void TestTakingTurnsQueue_AddPlayerMidway()
     {
         var bob = new Person("Bob", 2);
@@ -58,6 +59,7 @@ public class TakingTurnsQueueTests
         players.AddPerson(tim.Name, tim.Turns);
         players.AddPerson(sue.Name, sue.Turns);
 
+        
         int i = 0;
         for (; i < 5; i++)
         {
@@ -85,7 +87,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: The wrong name was being retreived from the end of the queue. The code didn't account for people with infinite turns and hence were decrementing 
     public void TestTakingTurnsQueue_ForeverZero()
     {
         var timTurns = 0;
@@ -116,7 +118,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Tim, Sue, Tim, Sue, Tim, Sue, Tim, Tim, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: Like for 0, there was no provision for negative integers. Once that was accounted for in the definition of GetNextPerson(), the error went away. 
     public void TestTakingTurnsQueue_ForeverNegative()
     {
         var timTurns = -3;
@@ -143,7 +145,7 @@ public class TakingTurnsQueueTests
     [TestMethod]
     // Scenario: Try to get the next person from an empty queue
     // Expected Result: Exception should be thrown with appropriate error message.
-    // Defect(s) Found: 
+    // Defect(s) Found: No defect was found here and the correct exception was thrown when an empty queue was passed. 
     public void TestTakingTurnsQueue_Empty()
     {
         var players = new TakingTurnsQueue();
