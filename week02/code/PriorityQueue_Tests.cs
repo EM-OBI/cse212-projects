@@ -62,7 +62,7 @@ public class PriorityQueueTests
         var priorityQueue = new PriorityQueue();
 
         var items = new List<string>{"beans", "rice", "plantain", "moi-moi", "gizzard"};
-        var priorities = new List<int>{4, 6, 15, 6, 9};
+        var priorities = new List<int>{16, 20, 15, 20, 20};
 
         int Length = items.Count;
 
@@ -75,11 +75,11 @@ public class PriorityQueueTests
         //Create a new queue to test against
         var expectedResult = new List<PriorityItem>
         {
-            new PriorityItem("beans", 4),
-            new PriorityItem("rice", 6),
+            new PriorityItem("beans", 16),
+            new PriorityItem("rice", 20),
             new PriorityItem("plantain", 15),
-            new PriorityItem("moi-moi", 6),
-            new PriorityItem("gizzard", 9)
+            new PriorityItem("moi-moi", 20),
+            new PriorityItem("gizzard", 20)
         };
 
         var queueLength = priorityQueue.Length;
