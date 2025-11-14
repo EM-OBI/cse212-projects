@@ -1,4 +1,6 @@
+using System.Linq.Expressions;
 using System.Text.Json;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 public static class SetsAndMaps
 {
@@ -21,8 +23,23 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var set = new HashSet<string>(words) {};
+        var usedSet = new HashSet<string>() {};
+        var final = new List<string>();
+        //
+        foreach (string word in words)
+        {
+            string mirror = word[1] + word[0].ToString();
+
+            if (set.Contains(mirror) && !usedSet.Contains(word) && !usedSet.Contains(mirror) && word[0] != word[1])
+            {
+                final.Add($"{word} & {mirror}");
+                usedSet.Add(word);
+                usedSet.Add(mirror);
+            }
+        }
+
+        return final.ToArray();
     }
 
     /// <summary>
@@ -43,6 +60,15 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            var degreeName = fields[3];
+            if (!degrees.ContainsKey(degreeName))
+            {
+                degrees[degreeName] = 1;
+            }
+            else
+            {
+                degrees[degreeName] += 1;
+            }
         }
 
         return degrees;
@@ -67,7 +93,52 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        word1 = word1.ToLower().Replace(" ", "");
+        word2 = word2.ToLower().Replace(" ", "");
+
+        var dict1 = new Dictionary<char, int>();
+        var dict2 = new Dictionary<char, int>();
+
+        var compareLength = word1.Length;
+
+        if (word2.Length == compareLength)
+        {
+            for (int i = 0; i < compareLength; i++)
+            {
+                if (!dict1.ContainsKey(word1[i]))
+                {
+                    dict1[word1[i]] = 1;
+
+                }
+                else
+                {
+                    dict1[word1[i]] += 1;
+                }
+                //
+                if (!dict2.ContainsKey(word2[i]))
+                {
+                    dict2[word2[i]] = 1;
+                }
+                else
+                {
+                    dict2[word2[i]] += 1;
+                }
+            }
+
+            foreach (var key in dict1.Keys)
+            {
+                if (!dict2.ContainsKey(key) || dict1[key] != dict2[key])
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -101,6 +172,13 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        var features = new List<string>();
+        foreach (Feature feature in featureCollection.features)
+        {
+            var place = feature.properties.place;
+            var mag = feature.properties.mag;
+            features.Add($"{place} - Mag {mag}");
+        }
+        return features.ToArray();
     }
 }
