@@ -15,7 +15,15 @@ public static class Recursion
     public static int SumSquaresRecursive(int n)
     {
         // TODO Start Problem 1
-        return 0;
+        if (n <= 0) //Define base case
+        {
+            return 0;
+        }
+        else
+        {
+            return (n * n) + SumSquaresRecursive(n - 1); //Call function smaller problem
+            
+        }
     }
 
     /// <summary>
@@ -40,6 +48,23 @@ public static class Recursion
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
         // TODO Start Problem 2
+        if (results is null) //Check if the function is being run for the first time
+            results = new List<string>();
+
+        if (word.Length == size) //If the word has met the required size, add it to the results array
+        {
+            results.Add(word);
+            Console.WriteLine(word);
+        }
+        else //Build the word
+        {
+            for (var i = 0; i < letters.Length; i++)
+            {
+                var lettersLeft = letters.Remove(i, 1);
+
+                PermutationsChoose(results, lettersLeft, size, word + letters[i]);
+            }
+        }
     }
 
     /// <summary>
@@ -97,9 +122,18 @@ public static class Recursion
             return 4;
 
         // TODO Start Problem 3
+        if (remember is null)
+            remember = new Dictionary<int, decimal>();
+
+        if (remember.ContainsKey(s))
+        {
+            return remember[s];
+        }
 
         // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        decimal ways = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
+
+        remember[s] = ways;
         return ways;
     }
 
@@ -119,6 +153,21 @@ public static class Recursion
     public static void WildcardBinary(string pattern, List<string> results)
     {
         // TODO Start Problem 4
+        int index = pattern.IndexOf("*");
+
+        if (index == -1)
+        {
+            results.Add(pattern);
+            return;
+        }
+        else
+        {
+            string newZero = pattern[..index] + "0" + pattern[(index + 1)..];
+            string newOne = pattern[..index] + "1" + pattern[(index + 1)..];
+
+            WildcardBinary(newZero, results);
+            WildcardBinary(newOne, results);
+        }
     }
 
     /// <summary>
